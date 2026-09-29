@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{REPORT_TITLE}}</title>
+  <!--
+    VOC Skill 报告模板 v2
+    ─────────────────────────────────────────────────────────────
+    使用说明（AI 阅读）：
+    1. 将所有 {{PLACEHOLDER}} 替换为实际内容（见下方说明）。
+    2. 左侧导航：在 <nav class="sidebar"> 中按报告实际章节增删 <a> 链接。
+    3. 每个 <section id="sec-xxx"> 必须在导航中有对应 <a href="#sec-xxx">。
+    4. 证据等级标签只能是以下三种：
+         <span class="badge b-clear">数据明确支持</span>
+         <span class="badge b-lean">当前样本倾向</span>
+         <span class="badge b-guess">需要更多数据确认</span>
+    5. 每题答案卡片 .answer-card 内必须先用 .a-header 展示题号和题目原文，再用 .a-body 写答案。
+    6. 数据来源区分实时/<span class="bar-type type-rt">实时</span> 和搜库/<span class="bar-type type-sk">搜库</span>，并在 header 里标注「采集工具：八爪鱼」。
+    7. 本文件是 CSS+HTML 骨架，不包含任何真实内容；所有内容由 AI 根据实际 VOC 数据填写。
+    ─────────────────────────────────────────────────────────────
+    PLACEHOLDER 说明：
+    {{REPORT_TITLE}}       → 页面 <title>，如「瑞幸全冰去水跨渠道口碑研究」
+    {{SKILL_ID_LABEL}}     → 侧边栏顶部标签，如「voc-01 · 瑞幸全冰」
+    {{SKILL_ID}}           → Skill 编号，如 voc-01-cross-channel
+    {{REPORT_H1}}          → 报告大标题，如「跨渠道VOC桌面研究 · 瑞幸全冰去水」
+    {{SKILL_NAME}}         → Skill 名称，如「跨渠道VOC桌面研究」
+    {{DATA_RANGE}}         → 数据时间范围，如「2025-01-01 ~ 2026-08-17」
+    {{DATA_SOURCES}}       → 平台列表，如「京东 · 天猫 · 小红书 · 微博」
+    {{SAMPLE_SIZE}}        → 样本量，如「约 120 条有效评论」
+    {{REPORT_DATE}}        → 报告日期，如「2026-08-17」
+    {{CORE_JUDGMENT}}      → 核心判断（1~2 句话，可用 <strong> 高亮关键词）
+    {{Q1_TEXT}} ... {{Q4_TEXT}} → 4 个标准问题文本（来自对应 SKILL.md）
+    {{ANS_1}} ... {{ANS_4}}    → 每题一句话答案
+    {{BADGE_1}} ... {{BADGE_4}} → 每题证据等级标签（选上方三种之一）
+  -->
+  <style>
+    /* ── 颜色变量 ── */
+    :root {
+      --ink: #1f2328;
+      --muted: #57606a;
+      --line: #d0d7de;
+      --bg: #f0f6ff;
+      --blue: #0969da;
+      --blue-mid: #b6d4fe;
+      --gold: #9a6700;
+      --green: #1a7f37;
+      --red: #cf222e;
+      --nav-w: 210px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "PingFang SC", "Noto Sans SC", sans-serif; line-height: 1.7; color: var(--ink); background: #f5f8ff; }
+
+    /* ── 布局 ── */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ── 左侧导航 ── */
+    .sidebar {
+      width: var(--nav-w); flex-shrink: 0;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      background: #1a2332; padding: 24px 0; border-right: 1px solid #2d3a4a;
+    }
+    .sidebar .nav-title {
+      font-size: .68rem; color: #6b7a8d;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 0 18px 10px;
+    }
+    .sidebar a {
+      display: block; padding: 6px 18px; font-size: .84rem;
+      color: #8a9ab0; text-decoration: none;
+      border-left: 2px solid transparent; transition: all .15s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      color: #e8f0ff; border-left-color: #4d9fff; background: #243047;
+    }
+    .sidebar .nav-group { margin-top: 18px; }
+    .sidebar .nav-group-label {
+      font-size: .66rem; color: #3d4f63;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: 0 18px 4px;
+    }
+
+    /* ── 主内容区 ── */
+    .main { flex: 1; padding: 32px 44px; min-width: 0; }
+
+    /* ── 报告头部 ── */
+    .report-header {
+      background: linear-gradient(135deg, #1354c9 0%, #0e7de8 100%);
+      color: #fff; border-radius: 12px; padding: 28px 32px;
+      margin-bottom: 28px; box-shadow: 0 4px 20px rgba(13,105,218,.25);
+    }
+    .report-header h1 { font-size: 1.5rem; color: #fff; margin-bottom: 4px; }
+    .report-header .subtitle { font-size: .88rem; color: rgba(255,255,255,.7); margin-bottom: 20px; }
+    .meta-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+    .meta-card {
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+      border-radius: 8px; padding: 10px 14px;
+    }
+    .meta-card .label { font-size: .7rem; color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+    .meta-card .value { font-size: .92rem; color: #fff; font-weight: 600; }
+    .meta-card .sub { font-size: .7rem; color: rgba(255,255,255,.55); margin-top: 4px; }
+    .core-judgment {
+      background: rgba(255,255,255,.18);
+      border-left: 3px solid rgba(255,255,255,.8);
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+    }
+    .core-judgment .cj-label { font-size: .7rem; color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+    .core-judgment p { color: #fff; font-size: .97rem; }
+    .core-judgment strong { color: #ffe566; }
+
+    /* ── 章节通用 ── */
+    section { margin-bottom: 44px; scroll-margin-top: 24px; }
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 2px solid var(--blue-mid);
+      padding-bottom: 10px; margin-bottom: 16px;
+    }
+    .section-num { font-size: 1.4rem; font-weight: 700; color: var(--blue); line-height: 1; min-width: 32px; }
+    .section-title { font-size: 1.08rem; font-weight: 600; }
+    .section-sub { font-size: .85rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── 第一部分：问题列表 ── */
+    .question-list { background: #fff; border: 1px solid var(--blue-mid); border-radius: 10px; padding: 6px 22px; }
+    .question-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e8f0ff; }
+    .question-item:last-child { border-bottom: none; }
+    .q-num {
+      background: var(--blue); color: #fff; font-size: .72rem; font-weight: 700;
+      border-radius: 50%; width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 4px;
+    }
+    .q-text { font-size: .97rem; }
+
+    /* ── 第二部分：答案卡片 ── */
+    .answer-list { display: flex; flex-direction: column; gap: 10px; }
+    .answer-card {
+      background: #fff; border-radius: 10px;
+      border: 1px solid var(--line); border-left: 4px solid var(--blue);
+      padding: 14px 18px;
+    }
+    .a-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .a-num { background: var(--blue); color: #fff; font-size: .72rem; font-weight: 700; border-radius: 4px; padding: 2px 8px; flex-shrink: 0; }
+    .a-question { font-size: .88rem; color: var(--muted); font-weight: 500; }
+    .a-body { font-size: .95rem; color: var(--ink); }
+
+    /* ── 证据等级标签 ── */
+    .badge { display: inline-block; font-size: .68rem; padding: 1px 6px; border-radius: 4px; font-weight: 500; margin-left: 5px; vertical-align: middle; white-space: nowrap; }
+    .b-clear { background: #dafbe1; color: var(--green); }
+    .b-lean  { background: #fff8c5; color: var(--gold); }
+    .b-guess { background: #ffd8d3; color: var(--red); }
+
+    /* ── 数据样本条形图 ── */
+    .bar-row { display: flex; align-items: center; gap: 10px; margin: 7px 0; font-size: .88rem; }
+    .bar-label { width: 200px; flex-shrink: 0; }
+    .bar-track { flex: 1; background: #e0eaff; border-radius: 4px; height: 13px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; background: var(--blue); }
+    .bar-fill.soku { background: #d4a017; }
+    .bar-num { width: 80px; text-align: right; color: var(--muted); font-size: .82rem; }
+    .bar-type { font-size: .68rem; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+    .type-rt { background: #ddf4ff; color: var(--blue); }
+    .type-sk { background: #fff8c5; color: var(--gold); }
+
+    /* ── 正文组件 ── */
+    .quote { margin: 10px 0; padding: 10px 14px; background: var(--bg); border-left: 3px solid var(--blue); font-size: .9rem; border-radius: 0 6px 6px 0; }
+    .quote .src { font-size: .78rem; color: var(--muted); margin-top: 4px; }
+    .insight { background: #f0fff4; border: 1px solid #b3efcc; border-radius: 6px; padding: 9px 13px; margin-top: 10px; font-size: .87rem; }
+    .insight::before { content: "洞察  "; font-weight: 700; color: var(--green); }
+    .why-note { background: var(--bg); border-radius: 6px; padding: 8px 12px; margin-top: 8px; font-size: .84rem; color: var(--muted); }
+    .why-note::before { content: "还可能是："; font-weight: 600; }
+    .gap-box { background: #fffbdd; border: 1px solid #d4a017; border-radius: 8px; padding: 12px 16px; margin: 14px 0; font-size: .9rem; }
+    .gap-box .gap-title { font-weight: 600; color: var(--gold); margin-bottom: 6px; }
+
+    /* ── 表格 ── */
+    table { border-collapse: collapse; width: 100%; font-size: .9rem; margin: 12px 0; }
+    th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: var(--bg); font-weight: 600; }
+    tr:nth-child(even) td { background: #f7faff; }
+
+    /* ── 八爪鱼徽章 ── */
+    .octoparse-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #fff3e0; border: 1px solid #ffb74d;
+      border-radius: 5px; padding: 1px 8px;
+      font-size: .75rem; font-weight: 600; color: #e65100;
+    }
+
+    /* ── 页脚 ── */
+    footer { margin-top: 40px; font-size: .8rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ══════════════ 左侧导航 ══════════════ -->
+  <!-- 按报告实际章节增删 <a>，id 必须与下方 section id 对应 -->
+  <nav class="sidebar">
+    <div class="nav-title">{{SKILL_ID_LABEL}}</div>
+    <div class="nav-group">
+      <div class="nav-group-label">报告概览</div>
+      <a href="#sec-header">报告信息</a>
+      <a href="#sec-sample">数据样本</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">本报告解答</div>
+      <a href="#sec-questions">第一部分 · 解答什么？</a>
+      <a href="#sec-answers">第二部分 · 结论一览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">第三部分 · 逐题拆解</div>
+      <!-- 按实际问题数量增删，href 和 id 保持一致 -->
+      <a href="#sec-q1">Q1 {{Q1_SHORT}}</a>
+      <a href="#sec-q2">Q2 {{Q2_SHORT}}</a>
+      <a href="#sec-q3">Q3 {{Q3_SHORT}}</a>
+      <a href="#sec-q4">Q4 {{Q4_SHORT}}</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">附加分析</div>
+      <!-- 可根据 Skill 专属分析表增删 -->
+      <a href="#sec-extra">专属深度分析</a>
+      <a href="#sec-gaps">还不能确定什么</a>
+      <a href="#sec-appendix">附录</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════ 主内容区 ══════════════ -->
+  <div class="main">
+
+    <!-- ── 报告头部 ── -->
+    <section id="sec-header">
+      <div class="report-header">
+        <h1>{{REPORT_H1}}</h1>
+        <p class="subtitle">{{SKILL_ID}} · {{SKILL_NAME}}</p>
+        <div class="meta-grid">
+          <div class="meta-card">
+            <div class="label">数据时间范围</div>
+            <div class="value">{{DATA_RANGE}}</div>
+          </div>
+          <div class="meta-card">
+            <div class="label">数据来源</div>
+            <div class="value">{{DATA_SOURCES}}</div>
+            <div class="sub">采集工具：八爪鱼</div>
+          </div>
+          <div class="meta-card">
+            <div class="label">分析样本</div>
+            <div class="value">{{SAMPLE_SIZE}}</div>
+          </div>
+          <div class="meta-card">
+            <div class="label">报告日期</div>
+            <div class="value">{{REPORT_DATE}}</div>
+          </div>
+        </div>
+        <div class="core-judgment">
+          <div class="cj-label">核心判断</div>
+          <p>{{CORE_JUDGMENT}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 数据样本 ── -->
+    <section id="sec-sample">
+      <div class="section-header">
+        <div class="section-num" style="font-size:1rem;color:var(--muted)">■</div>
+        <div>
+          <div class="section-title">数据样本构成</div>
+          <div class="section-sub" style="display:flex;align-items:center;gap:6px;">
+            采集工具：<span class="octoparse-badge">🐙 八爪鱼</span>
+          </div>
+        </div>
+      </div>
+      <!-- 每行对应一个平台，width% = 该平台条数 / 总条数 × 100 -->
+      <!-- 实时数据用 type-rt 标签，搜库用 type-sk 标签 -->
+      <div class="bar-row">
+        <span class="bar-label">平台名称 <span class="bar-type type-rt">实时</span></span>
+        <div class="bar-track"><div class="bar-fill" style="width:50%"></div></div>
+        <span class="bar-num">N 条</span>
+      </div>
+      <!-- 搜库示例 -->
+      <div class="bar-row">
+        <span class="bar-label">平台名称 <span class="bar-type type-sk">搜库</span></span>
+        <div class="bar-track"><div class="bar-fill soku" style="width:30%"></div></div>
+        <span class="bar-num">N 条</span>
+      </div>
+    </section>
+
+    <!-- ══ 第一部分：解答什么 ══ -->
+    <section id="sec-questions">
+      <div class="section-header">
+        <div class="section-num">①</div>
+        <div>
+          <div class="section-title">本报告主要解答什么问题？</div>
+          <div class="section-sub">这个 Skill 每次生成的报告，都围绕同一组问题作答</div>
+        </div>
+      </div>
+      <div class="question-list">
+        <div class="question-item"><div class="q-num">1</div><div class="q-text">{{Q1_TEXT}}</div></div>
+        <div class="question-item"><div class="q-num">2</div><div class="q-text">{{Q2_TEXT}}</div></div>
+        <div class="question-item"><div class="q-num">3</div><div class="q-text">{{Q3_TEXT}}</div></div>
+        <div class="question-item"><div class="q-num">4</div><div class="q-text">{{Q4_TEXT}}</div></div>
+      </div>
+    </section>
+
+    <!-- ══ 第二部分：结论一览 ══ -->
+    <section id="sec-answers">
+      <div class="section-header">
+        <div class="section-num">②</div>
+        <div>
+          <div class="section-title">结论一览</div>
+          <div class="section-sub">依次回答上面 4 个问题，每题一句话</div>
+        </div>
+      </div>
+      <div class="answer-list">
+        <!-- 每个 answer-card：先展示题目原文（.a-question），再写答案（.a-body），末尾加证据等级标签 -->
+        <div class="answer-card">
+          <div class="a-header">
+            <div class="a-num">Q1</div>
+            <div class="a-question">{{Q1_TEXT}}</div>
+          </div>
+          <div class="a-body">{{ANS_1}} {{BADGE_1}}</div>
+        </div>
+        <div class="answer-card">
+          <div class="a-header">
+            <div class="a-num">Q2</div>
+            <div class="a-question">{{Q2_TEXT}}</div>
+          </div>
+          <div class="a-body">{{ANS_2}} {{BADGE_2}}</div>
+        </div>
+        <div class="answer-card">
+          <div class="a-header">
+            <div class="a-num">Q3</div>
+            <div class="a-question">{{Q3_TEXT}}</div>
+          </div>
+          <div class="a-body">{{ANS_3}} {{BADGE_3}}</div>
+        </div>
+        <div class="answer-card">
+          <div class="a-header">
+            <div class="a-num">Q4</div>
+            <div class="a-question">{{Q4_TEXT}}</div>
+          </div>
+          <div class="a-body">{{ANS_4}} {{BADGE_4}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 第三部分：逐题拆解 ══ -->
+    <!-- 每个 Q 用一个 section，id 与导航对应 -->
+    <!-- 正文组件：.quote（用户原声）+ .insight（分析洞察）+ .why-note（还可能是） -->
+
+    <section id="sec-q1">
+      <div class="section-header">
+        <div class="section-num">Q1</div>
+        <div><div class="section-title">{{Q1_TEXT}}</div></div>
+      </div>
+      <!-- 在此填写 Q1 的详细分析：条形图/表格/引用/洞察 -->
+    </section>
+
+    <section id="sec-q2">
+      <div class="section-header">
+        <div class="section-num">Q2</div>
+        <div><div class="section-title">{{Q2_TEXT}}</div></div>
+      </div>
+      <!-- Q2 详细分析 -->
+    </section>
+
+    <section id="sec-q3">
+      <div class="section-header">
+        <div class="section-num">Q3</div>
+        <div><div class="section-title">{{Q3_TEXT}}</div></div>
+      </div>
+      <!-- Q3 详细分析 -->
+    </section>
+
+    <section id="sec-q4">
+      <div class="section-header">
+        <div class="section-num">Q4</div>
+        <div><div class="section-title">{{Q4_TEXT}}</div></div>
+      </div>
+      <!-- Q4 详细分析 -->
+    </section>
+
+    <!-- ══ 专属深度分析（对应 SKILL.md 中的专属分析表） ══ -->
+    <section id="sec-extra">
+      <div class="section-header">
+        <div class="section-num" style="font-size:1rem;color:var(--muted)">+</div>
+        <div><div class="section-title">专属深度分析（{{SKILL_NAME}}）</div></div>
+      </div>
+      <!-- 按各 SKILL.md 中规定的专属分析表填写 -->
+    </section>
+
+    <!-- ══ 还不能确定什么 ══ -->
+    <section id="sec-gaps">
+      <div class="section-header">
+        <div class="section-num" style="font-size:1rem;color:var(--red)">!</div>
+        <div><div class="section-title">还不能确定什么</div></div>
+      </div>
+      <div class="gap-box">
+        <div class="gap-title">数据边界</div>
+        <!-- 说明数据缺口、结论降级、如果补数可能改变什么 -->
+      </div>
+    </section>
+
+    <!-- ══ 附录 ══ -->
+    <section id="sec-appendix">
+      <div class="section-header">
+        <div class="section-num" style="font-size:1rem;color:var(--muted)">≡</div>
+        <div><div class="section-title">附录：取数说明</div></div>
+      </div>
+      <p style="font-size:.9rem">
+        采集工具：<strong>八爪鱼（Octoparse）</strong>。
+        <!-- 说明实时抓取的关键词、搜库 query、原始数据存放路径 -->
+        原始数据：<code>temp/voc-raw/{{SKILL_ID}}-{{CASE_NAME}}/</code>
+      </p>
+    </section>
+
+    <footer>
+      <span class="badge b-clear">数据明确支持</span> ·
+      <span class="badge b-lean">当前样本倾向</span> ·
+      <span class="badge b-guess">需要更多数据确认</span>
+      <br>
+      {{SKILL_ID}} · 数据采集：八爪鱼（Octoparse）
+    </footer>
+
+  </div><!-- /.main -->
+</div><!-- /.layout -->
+
+<!-- ── 左侧导航高亮（滚动联动） ── -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('.sidebar a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+﻿skill_id,中文名,Amazon_Product_Review,八爪鱼官方实时采集,八爪鱼平台库搜,WorkBuddy全网搜索,用户数据,正式报告Gate
+voc-01-cross-channel,跨渠道 VOC 桌面研究,COND,COND,COND,YES,COND,100
+voc-02-social-insight,社媒用户深度洞察,NO,COND,YES,COND,COND,100
+voc-03-dissatisfaction,用户不满场景深度洞察,YES,COND,COND,COND,COND,100
+voc-04-survey,问卷数据 VOC 深度分析,NO,NO,NO,NO,YES,100
+voc-05-interview,用户访谈 VOC 结构化分析,NO,NO,NO,NO,YES,100
+voc-06-innovation,创新机会捕捉,COND,COND,COND,COND,COND,100
+voc-07-hit-product,爆品成功要素拆解,YES,COND,COND,YES,COND,100
+voc-08-trend,品类趋势与前瞻性洞察,COND,COND,YES,YES,COND,100
+voc-09-golden-params,产品黄金参数定义,YES,COND,COND,COND,COND,100
+voc-10-persona,用户画像与细分市场,COND,COND,YES,COND,COND,100
+voc-11-jtbd,JTBD 用户任务分析,COND,COND,COND,COND,COND,100
+voc-12-selling-point,卖点感知与传播效果分析,COND,COND,COND,YES,COND,100
+voc-13-seeding,社媒种草效果分析（PGC+UGC）,NO,COND,YES,COND,COND,100
+voc-14-positioning,产品差异化定位分析,YES,COND,COND,YES,COND,100
+voc-15-event-sentiment,营销事件舆情分析,NO,COND,YES,YES,COND,100
+voc-16-cross-culture,跨国 / 跨文化 VOC 研究,COND,COND,COND,YES,COND,100
+voc-17-new-product-monitor,新品上市反馈监测,YES,COND,COND,YES,COND,100
+voc-18-pdp-optimize,电商详情页卖点优化,YES,COND,COND,YES,COND,100
+voc-19-purchase-barrier,购买障碍与转化分析,COND,COND,YES,YES,COND,100
+voc-20-star-rating,星级评分与口碑提升专项,YES,NO,NO,NO,COND,100
+voc-21-promo-risk,大促前口碑风险扫描,YES,COND,COND,YES,COND,100
+voc-22-negative-deepdive,负面口碑专题深度研究,YES,COND,COND,COND,COND,100
+voc-23-competitor,竞品 VOC 对比分析,YES,COND,COND,YES,COND,100
+voc-24-journey-map,用户体验旅程地图,COND,COND,COND,YES,COND,100
+voc-25-auto-defeat,车型战败与流失分析（汽车行业专属）,NO,COND,YES,YES,COND,100
