@@ -1,0 +1,16 @@
+interface:
+  display_name: "热点快报（八爪鱼）"
+  short_description: "连接 DataHub，检索近7天热点；快速1批，深度6批"
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#1269C7"
+  default_prompt: "使用 $build-hot-news-brief 处理所有近期新闻、热点、动态和趋势查询。新会话首次触发时，先提示客户在 WorkBuddy「连接器」中连接 DataHub 并使用自己的账号授权；已连接则直接继续。快速模式1批，深度强触发词固定6批，不得增加第7批。只有 collect-hot-news-data 可调用 get_data_app_details、run_data_app、get_run_status、get_run_result，并固定使用三个 App：app_ce135270dd97、app_75e95cb205ca、app_d0b3c5d95406。主 Skill 统一发送开工参数、真实批次进度、候选预览、清洗、快报生成和最终交付状态；连续45秒无反馈时提示一次，之后至多每60秒一次。最终直接输出1–3条短总结和最多10条真实原文链接，不显示费用、账单、余额、额度或凭证。"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "datahub-hot-news-brief"
+      description: "DataHub 三种公开资讯检索 App；客户在 WorkBuddy 连接器中使用自己的账号授权"
+      transport: "streamable_http"
+      url: "https://mcp-v2.bazhuayu.com/"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,20 @@
+# Generated deliverables and runtime state
+*.zip
+*.docx
+*.pdf
+outputs/
+dist/
+__pycache__/
+node_modules/
+
+# Local secrets and environment files
+.env
+.env.*
+*.key
+*.pem
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
